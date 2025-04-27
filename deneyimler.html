@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PsikoAI Deneyim Paylaşımı</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+        background-image: url('https://images.pexels.com/photos/10730438/pexels-photo-10730438.jpeg'); /* Pexels görselinin doğru URL'si */
+        background-size: cover; /* Resmi ekranın tamamına yay */
+      background-position: center center; /* Resmi ortala */
+      background-attachment: fixed; /* Arka planı sabitle */
+      background-repeat: no-repeat; /* Resmin tekrarlanmasını engelle */
+      height: 100vh; /* Sayfa yüksekliğini %100 yap */
+      margin: 0; /* Varsayılan margin'i kaldır */
+    }
+
+    h2 {
+  color: #ffffff; /* İstediğiniz renge göre değiştirebilirsiniz */
+}
+
+    .navbar {
+      background-color: #5f0202e3;
+    }
+    .navbar-brand {
+      color: #fff !important;
+    }
+    .navbar-nav .nav-link {
+      color: #fff !important;
+    }
+    .navbar-nav .nav-link:hover {
+      color: #f2f2f2 !important;
+    }
+    .form-section {
+      background-color: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .card {
+      border: none;
+      border-radius: 12px;
+      background: #fafafa;
+    }
+    .card-title {
+      color: #5f0202e3;
+    }
+    .btn-primary {
+      background-color: #5f0202e3;
+      border-color: #5f0202e3;
+    }
+    .btn-primary:hover {
+      background-color: #a61e1e;
+      border-color: #a61e1e;
+    }
+  </style>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAtRMNulAN-61zCn-Q2JdvUs6b4t559MKs",
+      authDomain: "psikoai-abfc4.firebaseapp.com",
+      projectId: "psikoai-abfc4",
+      storageBucket: "psikoai-abfc4.firebasestorage.app",
+      messagingSenderId: "862816605989",
+      appId: "1:862816605989:web:9ef2683e2a2686f7b86ccc"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function submitExperience(event) {
+      event.preventDefault();
+      let name = document.getElementById('nameInput').value.trim();
+      const experience = document.getElementById('experienceInput').value.trim();
+      const source = document.getElementById('sourceInput').value; // Kullanıcının nereden keşfettiğini alıyoruz
+
+      if (!experience) {
+        alert("Lütfen bir deneyim yazın.");
+        return;
+      }
+
+      if (!name) {
+        name = "Anonim";
+      }
+
+      try {
+        await addDoc(collection(db, "experiences"), {
+          name: name,
+          experience: experience,
+          source: source, // Bu bilgiyi Firestore'a ekliyoruz
+          timestamp: new Date()
+        });
+        alert("Deneyiminiz kaydedildi! 🎉");
+        document.getElementById('experienceForm').reset();
+        fetchExperiences(); // Yeni eklenen deneyimi hemen göster
+      } catch (e) {
+        console.error("Hata oluştu: ", e);
+      }
+    }
+
+    async function fetchExperiences() {
+      const experiencesList = document.getElementById('experiencesList');
+      experiencesList.innerHTML = ""; // Önce listeyi temizle
+      const querySnapshot = await getDocs(collection(db, "experiences"));
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const experienceItem = document.createElement('div');
+        experienceItem.className = "card my-3 shadow-sm";
+        experienceItem.innerHTML = `
+          <div class="card-body">
+            <h5 class="card-title">${data.name}</h5>
+            <p class="card-text">${data.experience}</p>
+            <p><strong>Keşif Kaynağı:</strong> ${data.source}</p> <!-- Burada kaynağı ekliyoruz -->
+            <small class="text-muted">${new Date(data.timestamp.seconds * 1000).toLocaleString()}</small>
+          </div>
+        `;
+        experiencesList.appendChild(experienceItem);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('experienceForm').addEventListener('submit', submitExperience);
+      fetchExperiences();
+    });
+  </script>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">PsikoAI</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Ana Sayfa</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Form Section -->
+  <div class="container my-5">
+    <h2 class="text-center mb-4"> PsikoAI Deneyimini Bizimle Paylaş 🫳  🫴</h2>
+    <form id="experienceForm" class="form-section">
+      <div class="mb-3">
+        <label for="nameInput" class="form-label">Adınız (isteğe bağlı)</label>
+        <input type="text" class="form-control" id="nameInput" placeholder="Adınızı yazın (İstemiyorsanız boş bırakabilirsiniz)">
+      </div>
+      <div class="mb-3">
+        <label for="experienceInput" class="form-label">Deneyiminiz</label>
+        <textarea class="form-control" id="experienceInput" rows="4" placeholder="Deneyiminizi paylaşın..."></textarea>
+      </div>
+      <div class="mb-3">
+        <label for="sourceInput" class="form-label">PsikoAI'yı Nereden Keşfettiniz?</label>
+        <select class="form-select" id="sourceInput" required>
+          <option value="Google">Google</option>
+          <option value="Sosyal Medya">Sosyal Medya</option>
+          <option value="Arkadaş Tavsiyesi">Arkadaş Tavsiyesi</option>
+          <option value="Diğer">Diğer</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Gönder</button>
+    </form>
+
+    <hr class="my-5">
+
+    <h3 class="text-center mb-4">Paylaşılan Deneyimler</h3>
+    <div id="experiencesList" class="pb-5"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+
+</body>
+</html>
