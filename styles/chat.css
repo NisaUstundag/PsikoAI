@@ -60,3 +60,20 @@ body {
 input, button {
   width: 100%;
 }
+.redirect-btn {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.redirect-btn:hover {
+  background-color: #388e3c;
+  transform: scale(1.05);
+}

@@ -59,26 +59,31 @@ function freudResponse(text) {
     }
   }
 
-  // Belirli kelimelere göre duygu analizi
+  // Genişletilmiş duygu analiz anahtar kelimeleri
   const keywords = {
-    selam:["selam","merhaba","freud","hey","beni dinler misin"],
-    yalnızlık: ["yalnız", "yalnızlık", "kimsem yok", "tek başıma"],
-    stres: ["stres", "gergin", "bunaldım", "boğuluyorum"],
-    kaygı: ["endişe", "kaygı", "korkuyorum", "geriliyorum"],
-    mutsuzluk: ["mutsuzum", "üzgünüm", "depresyondayım", "hiçbir şey istemiyorum"],
-    öfke: ["sinirliyim", "kızgınım", "öfkeliyim", "patlamak üzereyim"],
-    mutluluk: ["mutluyum", "sevinçliyim", "iyi hissediyorum", "keyfim yerinde"]
+    selam: ["selam", "merhaba", "freud", "hey", "beni dinler misin"],
+    yalnızlık: ["yalnız", "yalnızlık", "kimsem yok", "tek başıma", "kimseyle konuşamıyorum"],
+    stres: ["stres", "gergin", "bunaldım", "boğuluyorum", "nefes alamıyorum"],
+    kaygı: ["endişe", "kaygı", "korkuyorum", "geriliyorum", "içimde bir sıkıntı"],
+    mutsuzluk: [
+      "mutsuzum", "üzgünüm", "depresyondayım", "hiçbir şey istemiyorum",
+      "boşlukta gibiyim", "canım hiçbir şey yapmak istemiyor", 
+      "hayat anlamsız", "sanki içim bomboş"
+    ],
+    öfke: ["sinirliyim", "kızgınım", "öfkeliyim", "patlamak üzereyim", "kendimi tutamıyorum"],
+    mutluluk: ["mutluyum", "sevinçliyim", "iyi hissediyorum", "keyfim yerinde", "her şey yolunda"]
   };
 
   for (const [duygu, kelimeler] of Object.entries(keywords)) {
     for (const k of kelimeler) {
       if (t.includes(k)) {
-        return duyguyaCevapVer(duygu); // Uygun cevap döndürülür
+        return duyguyaCevapVer(duygu);
       }
     }
   }
 
-  return "Bunu daha iyi anlayabilmem için biraz daha detay verebilir misin?";
+  // Daha doğal bir varsayılan cevap
+  return "Seni anlıyorum. Tarif etmesi zor duygular içinde olabilirsin. Birlikte ne hissettiğini çözebiliriz, biraz daha anlatmak ister misin?";
 }
 
 // Her duygu için rastgele bir cevap döndürür
@@ -101,8 +106,8 @@ function duyguyaCevapVer(duygu) {
       "Kaygı duymanı tetikleyen özel bir durum var mı?"
     ],
     mutsuzluk: [
-      "Mutsuzluk uzun süredir mi var? Birlikte bu duyguyu anlamaya çalışabiliriz.",
-      "Hayatında sana keyif veren şeyler var mı şu sıralar?"
+      "Bazen her şeyin anlamsız geldiği anlar olur. Bu boşluk hissini biraz daha anlatabilir misin?",
+      "Hayatında seni mutsuz eden şeyler neler, birlikte bakabiliriz istersen."
     ],
     öfke: [
       "Öfke çok güçlü bir duygudur. Ne oldu da böyle hissettin?",
