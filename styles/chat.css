@@ -1,0 +1,62 @@
+body {
+  font-family: Arial, sans-serif;
+  background-image: url('../images/fr.png');background-size: cover;
+  
+  background-size: cover;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100vh;
+}
+
+#chat-container {
+  background: #fff;
+  width: 400px;
+  max-width: 90%;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  margin-left: 180px; /* Daha sağa kaydırıldı */
+}
+
+#chat-messages {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  border-bottom: 1px solid #ddd;
+}
+
+#chat-messages div {
+  margin-bottom: 10px;
+}
+
+#chat-input {
+  border: none;
+  padding: 15px;
+  font-size: 16px;
+  border-top: 1px solid #ddd;
+  flex: 1;
+  outline: none;
+}
+
+#chat-send {
+  background-color: #4caf50; /* Yeşil buton */
+  color: white;
+  border: none;
+  padding: 15px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#chat-send:hover {
+  background-color: #388e3c; /* Hover efekti */
+}
+
+input, button {
+  width: 100%;
+}
